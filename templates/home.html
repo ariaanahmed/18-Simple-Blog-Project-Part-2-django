@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="d-flex flex-wrap container">
+  <div class="col-6">
+    <h1>Welcom to Simple Blog</h1>
+    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod rem nostrum, dolorum illo expedita excepturi? Natus, minus laudantium quos autem similique eius sequi facilis quas fuga laboriosam, temporibus blanditiis illum.</p>
+  </div>
+  <div class="col-6">
+    <img src="{% static 'img/bg-img.jpg' %}" alt="">
+  </div>
+</div>
+
+<div class="d-flex flex-wrap container pt-3">
+
+  <div class="col-2 border p-3 bg-white">
+    <h4>All Categories</h4>
+    {%for cate in category%}
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="flexRadioDefault" id="{{cate.id}}">
+      <label class="form-check-label" for="{{cate.id}}">
+        <a href="{% url 'category_wise_post' cate.slug %} ">{{cate.name}}</a>
+      </label>
+    </div>
+    {%endfor%}
+
+  </div>
+
+  <div class="col-10">
+
+    <h4>{{data | length}} results found</h4>
+
+    <div class="d-flex flex-wrap">
+      {% for post in data %}
+      <div class="col-sm-3 mb-3 mb-sm-0">
+        <div class="card mx-2">
+          <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text">{{ post.content | truncatewords:30 }}
+              <a href="{% url 'edit_post' post.id%}">Read more</a>
+            </p>
+            <p>Author: {{ post.author.first_name }} {{ post.author.last_name }}</p>
+            <p>
+              Category:{% for cat in post.category.all %}
+              <span class="badge text-bg-primary text-white">{{ cat.name }}</span>
+              {% endfor %}
+            </p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
